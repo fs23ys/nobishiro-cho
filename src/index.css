@@ -1,0 +1,62 @@
+:root {
+  --bg: #faf7f2;
+  --surface: #ffffff;
+  --text: #2f2b26;
+  --text-muted: #7a7168;
+  --border: #e5ded2;
+  --accent: #35618f;
+  --moss: #2f9e44;
+  --moss-bg: #e5f6e8;
+  --clay: #954c12;
+  --clay-bg: #f5e2d0;
+  --danger: #b3392c;
+  --chip-bg: #e7e8ea;
+  --chip-text: #3d4147;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1a17;
+    --surface: #262320;
+    --text: #efe9e0;
+    --text-muted: #a89e91;
+    --border: #3a352e;
+    --accent: #8ab0dd;
+    --moss: #6fe08a;
+    --moss-bg: #1f3a26;
+    --clay: #d97706;
+    --clay-bg: #3d2a18;
+    --danger: #e06a5a;
+    --chip-bg: #35383e;
+    --chip-text: #d7dae0;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, 'Hiragino Sans', 'Yu Gothic', 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 15px;
+}
+
+#root {
+  min-height: 100svh;
+}
