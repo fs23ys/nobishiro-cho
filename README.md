@@ -1,7 +1,7 @@
 # のびしろ帖
 
 自分の長所・短所を日々記録し、週1回のペースで振り返るための個人用Webアプリ。
-React + Vite / Firebase（Firestore + Authentication + Hosting）構成。
+React + Vite / Firebase（Firestore + Authentication）/ Netlify（ホスティング）構成。
 
 ## セットアップ
 
@@ -36,22 +36,19 @@ cp .env.example .env
 npm run dev
 ```
 
-## デプロイ（Firebase Hosting）
+## デプロイ（Netlify）
 
-初回のみ:
+GitHubリポジトリ（`fs23ys/nobishiro-cho`、プライベート）と連携して自動デプロイする。
 
-```
-npm install -g firebase-tools
-firebase login
-firebase use --add   # 作成したFirebaseプロジェクトを選択
-```
+1. [Netlify](https://app.netlify.com/) にログインし、「Add new site」→「Import an existing project」
+2. GitHubを選択し、`nobishiro-cho` リポジトリを選ぶ
+3. ビルド設定は `netlify.toml` から自動で読み込まれる（Build command: `npm run build` / Publish directory: `dist`）
+4. 「Site settings」→「Environment variables」で `.env` と同じ内容を登録する
+   - `VITE_FIREBASE_API_KEY` / `VITE_FIREBASE_AUTH_DOMAIN` / `VITE_FIREBASE_PROJECT_ID` / `VITE_FIREBASE_STORAGE_BUCKET` / `VITE_FIREBASE_MESSAGING_SENDER_ID` / `VITE_FIREBASE_APP_ID` / `VITE_ALLOWED_EMAIL`
+5. デプロイ後に発行されるURL（例: `xxxx.netlify.app`）を、Firebase Console の Authentication →「Settings」→「Authorized domains」に追加する（追加しないとGoogleログインがブロックされる）
 
-デプロイ:
+以後は `main` ブランチにpushするたびに自動で再デプロイされる。
 
-```
-npm run build
-firebase deploy
-```
+### Firebaseの設定（参考）
 
-`firebase.json` は `dist` ディレクトリをHostingの公開先として設定済み。
-`firestore.rules` は `firebase deploy --only firestore:rules` でも反映できる。
+Firestore/Authenticationの設定手順は上記の通り。`firestore.rules` は Firebase Console の「ルール」タブから直接貼り付けて公開する運用としている（Firebase Hostingは使用していない）。
