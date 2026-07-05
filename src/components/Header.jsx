@@ -13,7 +13,7 @@ import { todayStr } from '../utils/format'
 
 const TABS = [
   { key: 'entries', label: '記録' },
-  { key: 'traits', label: '長所短所' },
+  { key: 'traits', label: '長所・短所' },
   { key: 'review', label: '週次振り返り' },
 ]
 

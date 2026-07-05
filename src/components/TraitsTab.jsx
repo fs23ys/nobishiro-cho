@@ -232,17 +232,26 @@ export default function TraitsTab({ traits, entries }) {
               </button>
             </div>
             {editingId === t.id ? (
-              <input
-                className="trait-desc-input"
-                value={editingDesc}
-                autoFocus
-                onChange={(e) => setEditingDesc(e.target.value)}
-                onBlur={() => commitEdit(t.id)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') e.currentTarget.blur()
-                  if (e.key === 'Escape') setEditingId(null)
-                }}
-              />
+              <div className="trait-desc-edit">
+                <textarea
+                  className="trait-desc-input"
+                  value={editingDesc}
+                  autoFocus
+                  rows={3}
+                  onChange={(e) => setEditingDesc(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') setEditingId(null)
+                  }}
+                />
+                <div className="trait-desc-edit-actions">
+                  <button type="button" onClick={() => commitEdit(t.id)}>
+                    保存
+                  </button>
+                  <button type="button" onClick={() => setEditingId(null)}>
+                    キャンセル
+                  </button>
+                </div>
+              </div>
             ) : (
               <p className="trait-desc" onClick={() => startEdit(t)}>
                 {t.desc || 'メモを追加…'}
@@ -253,6 +262,7 @@ export default function TraitsTab({ traits, entries }) {
                 <button
                   type="button"
                   className="trait-type-switch-link"
+                  onMouseDown={(e) => e.preventDefault()}
                   onClick={() => handleToggleType(t)}
                 >
                   {t.type === 'moss' ? '短所に移動する' : '長所に移動する'}
