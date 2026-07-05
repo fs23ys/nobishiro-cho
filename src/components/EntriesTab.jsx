@@ -168,13 +168,26 @@ export default function EntriesTab({ entries, traits }) {
           required
         />
         {showNextAction ? (
-          <input
-            className="next-action-input"
-            placeholder="次から試す小さな一歩（任意）"
-            value={nextAction}
-            onChange={(e) => setNextAction(e.target.value)}
-            autoFocus
-          />
+          <div className="next-action-field">
+            <input
+              className="next-action-input"
+              placeholder="次から試す小さな一歩（任意）"
+              value={nextAction}
+              onChange={(e) => setNextAction(e.target.value)}
+              autoFocus
+            />
+            <button
+              type="button"
+              className="next-action-close"
+              aria-label="閉じる"
+              onClick={() => {
+                setNextAction('')
+                setShowNextAction(false)
+              }}
+            >
+              ×
+            </button>
+          </div>
         ) : (
           <button
             type="button"
@@ -298,13 +311,26 @@ export default function EntriesTab({ entries, traits }) {
                     autoFocus
                   />
                   {editingShowNextAction ? (
-                    <input
-                      className="next-action-input"
-                      placeholder="次から試す小さな一歩（任意）"
-                      value={editingNextAction}
-                      onChange={(e) => setEditingNextAction(e.target.value)}
-                      autoFocus
-                    />
+                    <div className="next-action-field">
+                      <input
+                        className="next-action-input"
+                        placeholder="次から試す小さな一歩（任意）"
+                        value={editingNextAction}
+                        onChange={(e) => setEditingNextAction(e.target.value)}
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        className="next-action-close"
+                        aria-label="閉じる"
+                        onClick={() => {
+                          setEditingNextAction('')
+                          setEditingShowNextAction(false)
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
                   ) : (
                     <button
                       type="button"

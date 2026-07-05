@@ -159,13 +159,29 @@
   color: var(--text);
 }
 
+.next-action-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .next-action-input {
+  flex: 1;
   width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--bg);
   color: var(--text);
+}
+
+.next-action-close {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px;
 }
 
 .next-action-row {
