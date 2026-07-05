@@ -12,6 +12,7 @@
   --danger: #b3392c;
   --chip-bg: #e7e8ea;
   --chip-text: #3d4147;
+  --card-shadow: 0 1px 4px rgba(60, 50, 30, 0.08);
   color-scheme: light;
 }
 
@@ -30,6 +31,7 @@
     --danger: #e06a5a;
     --chip-bg: #35383e;
     --chip-text: #d7dae0;
+    --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
     color-scheme: dark;
   }
 }

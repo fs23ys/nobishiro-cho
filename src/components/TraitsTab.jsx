@@ -248,15 +248,17 @@ export default function TraitsTab({ traits, entries }) {
                 {t.desc || 'メモを追加…'}
               </p>
             )}
-            <div className="trait-item-footer">
-              <button
-                type="button"
-                className="trait-type-switch-link"
-                onClick={() => handleToggleType(t)}
-              >
-                {t.type === 'moss' ? '短所に移動する' : '長所に移動する'}
-              </button>
-            </div>
+            {(editingNameId === t.id || editingId === t.id) && (
+              <div className="trait-item-footer">
+                <button
+                  type="button"
+                  className="trait-type-switch-link"
+                  onClick={() => handleToggleType(t)}
+                >
+                  {t.type === 'moss' ? '短所に移動する' : '長所に移動する'}
+                </button>
+              </div>
+            )}
           </li>
           )
         })}

@@ -19,11 +19,13 @@ export default function EntriesTab({ entries, traits }) {
   const [type, setType] = useState('moss')
   const [traitIds, setTraitIds] = useState([])
   const [nextAction, setNextAction] = useState('')
+  const [showNextAction, setShowNextAction] = useState(false)
   const [creatingTrait, setCreatingTrait] = useState(false)
   const [newTraitName, setNewTraitName] = useState('')
   const [editingId, setEditingId] = useState(null)
   const [editingText, setEditingText] = useState('')
   const [editingNextAction, setEditingNextAction] = useState('')
+  const [editingShowNextAction, setEditingShowNextAction] = useState(false)
   const [filterTraitId, setFilterTraitId] = useState('')
   const [traitSearchText, setTraitSearchText] = useState('')
 
@@ -98,6 +100,7 @@ export default function EntriesTab({ entries, traits }) {
     setText('')
     setTraitIds([])
     setNextAction('')
+    setShowNextAction(false)
   }
 
   const handleDelete = (id) => {
@@ -108,6 +111,7 @@ export default function EntriesTab({ entries, traits }) {
     setEditingId(entry.id)
     setEditingText(entry.text)
     setEditingNextAction(entry.nextAction ?? '')
+    setEditingShowNextAction(!!entry.nextAction)
   }
 
   const commitEdit = async (id) => {
@@ -127,6 +131,7 @@ export default function EntriesTab({ entries, traits }) {
   return (
     <div className="tab-panel">
       <form className="card entry-form" onSubmit={handleSubmit}>
+        <div className="entry-type-label">この気づきの種別</div>
         <div className="type-toggle">
           <label className={type === 'moss' ? 'chip chip-moss selected' : 'chip chip-moss'}>
             <input
@@ -162,12 +167,23 @@ export default function EntriesTab({ entries, traits }) {
           rows={3}
           required
         />
-        <input
-          className="next-action-input"
-          placeholder="次から試す小さな一歩（任意）"
-          value={nextAction}
-          onChange={(e) => setNextAction(e.target.value)}
-        />
+        {showNextAction ? (
+          <input
+            className="next-action-input"
+            placeholder="次から試す小さな一歩（任意）"
+            value={nextAction}
+            onChange={(e) => setNextAction(e.target.value)}
+            autoFocus
+          />
+        ) : (
+          <button
+            type="button"
+            className="next-action-add-link"
+            onClick={() => setShowNextAction(true)}
+          >
+            ＋ 次から試す小さな一歩を追加（任意）
+          </button>
+        )}
         <div className="trait-picker-label">
           特性を選ぶ（任意・上で選んだ種別から・よく使う順）
         </div>
@@ -281,12 +297,23 @@ export default function EntriesTab({ entries, traits }) {
                     rows={3}
                     autoFocus
                   />
-                  <input
-                    className="next-action-input"
-                    placeholder="次から試す小さな一歩（任意）"
-                    value={editingNextAction}
-                    onChange={(e) => setEditingNextAction(e.target.value)}
-                  />
+                  {editingShowNextAction ? (
+                    <input
+                      className="next-action-input"
+                      placeholder="次から試す小さな一歩（任意）"
+                      value={editingNextAction}
+                      onChange={(e) => setEditingNextAction(e.target.value)}
+                      autoFocus
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      className="next-action-add-link"
+                      onClick={() => setEditingShowNextAction(true)}
+                    >
+                      ＋ 次から試す小さな一歩を追加（任意）
+                    </button>
+                  )}
                   <div className="entry-edit-actions">
                     <button type="button" onClick={() => commitEdit(entry.id)}>
                       保存
