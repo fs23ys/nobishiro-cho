@@ -26,6 +26,7 @@ export default function EntriesTab({ entries, traits }) {
   const [editingText, setEditingText] = useState('')
   const [editingNextAction, setEditingNextAction] = useState('')
   const [editingShowNextAction, setEditingShowNextAction] = useState(false)
+  const [editingTraitIds, setEditingTraitIds] = useState([])
   const [filterTraitId, setFilterTraitId] = useState('')
   const [traitSearchText, setTraitSearchText] = useState('')
 
@@ -112,6 +113,13 @@ export default function EntriesTab({ entries, traits }) {
     setEditingText(entry.text)
     setEditingNextAction(entry.nextAction ?? '')
     setEditingShowNextAction(!!entry.nextAction)
+    setEditingTraitIds(getTraitIds(entry))
+  }
+
+  const toggleEditingTraitId = (id) => {
+    setEditingTraitIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    )
   }
 
   const commitEdit = async (id) => {
@@ -119,6 +127,7 @@ export default function EntriesTab({ entries, traits }) {
       await updateDoc(doc(db, 'entries', id), {
         text: editingText.trim(),
         nextAction: editingNextAction.trim() || null,
+        traitIds: editingTraitIds,
       })
     }
     setEditingId(null)
@@ -340,6 +349,29 @@ export default function EntriesTab({ entries, traits }) {
                       ＋ 次から試す小さな一歩を追加（任意）
                     </button>
                   )}
+                  <div className="trait-picker-label">特性を選ぶ（任意）</div>
+                  <div className="trait-picker">
+                    {traits
+                      .filter((t) => t.type === entry.type)
+                      .sort(
+                        (a, b) =>
+                          (traitUsageCount.get(b.id) ?? 0) - (traitUsageCount.get(a.id) ?? 0),
+                      )
+                      .map((t) => (
+                        <button
+                          type="button"
+                          key={t.id}
+                          className={
+                            editingTraitIds.includes(t.id)
+                              ? 'trait-pick-chip selected'
+                              : 'trait-pick-chip'
+                          }
+                          onClick={() => toggleEditingTraitId(t.id)}
+                        >
+                          {t.name}
+                        </button>
+                      ))}
+                  </div>
                   <div className="entry-edit-actions">
                     <button type="button" onClick={() => commitEdit(entry.id)}>
                       保存
