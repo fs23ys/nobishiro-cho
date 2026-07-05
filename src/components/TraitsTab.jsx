@@ -27,6 +27,26 @@ function byOrder(a, b) {
   return tb - ta
 }
 
+const NAME_PLACEHOLDER = {
+  moss: '例：タイピングが速い、人の話をしっかり聞ける',
+  clay: '例：忙しい時に対応が雑になる、朝が弱い',
+}
+
+const DESC_PLACEHOLDER = {
+  moss: '例：どんな時に発揮される？（例：薬歴入力が早く終わる）',
+  clay: '例：どんな時に起きやすい？（例：患者さんが多くて焦っている時）',
+}
+
+function CountBadge({ type, count }) {
+  if (count === 0) {
+    return <span className="trait-count trait-count-empty">−</span>
+  }
+  if (type === 'moss') {
+    return <span className="trait-count trait-count-moss">✨ {count}回</span>
+  }
+  return <span className="trait-count trait-count-clay">⚠️ {count}回</span>
+}
+
 export default function TraitsTab({ traits, entries }) {
   const [name, setName] = useState('')
   const [type, setType] = useState('moss')
@@ -147,6 +167,7 @@ export default function TraitsTab({ traits, entries }) {
             dragSource.index !== i
           const itemClassName = [
             'trait-item',
+            listType === 'moss' ? 'trait-item-moss' : 'trait-item-clay',
             isDragSource && 'trait-item-dragging',
             isHovered && 'trait-item-drop-target',
           ]
@@ -200,19 +221,7 @@ export default function TraitsTab({ traits, entries }) {
                   {t.name}
                 </span>
               )}
-              <span className="trait-count">{countByTraitId.get(t.id) ?? 0}件</span>
-              <button
-                type="button"
-                className={
-                  t.type === 'moss'
-                    ? 'trait-type-switch trait-type-switch-clay'
-                    : 'trait-type-switch trait-type-switch-moss'
-                }
-                title={t.type === 'moss' ? '短所に移動' : '長所に移動'}
-                onClick={() => handleToggleType(t)}
-              >
-                {t.type === 'moss' ? '→ 短所へ' : '→ 長所へ'}
-              </button>
+              <CountBadge type={t.type} count={countByTraitId.get(t.id) ?? 0} />
               <button
                 type="button"
                 className="delete-button"
@@ -239,6 +248,15 @@ export default function TraitsTab({ traits, entries }) {
                 {t.desc || 'メモを追加…'}
               </p>
             )}
+            <div className="trait-item-footer">
+              <button
+                type="button"
+                className="trait-type-switch-link"
+                onClick={() => handleToggleType(t)}
+              >
+                {t.type === 'moss' ? '短所に移動する' : '長所に移動する'}
+              </button>
+            </div>
           </li>
           )
         })}
@@ -251,7 +269,7 @@ export default function TraitsTab({ traits, entries }) {
     <div className="tab-panel">
       <form className="card trait-form" onSubmit={handleSubmit}>
         <input
-          placeholder="特性名"
+          placeholder={NAME_PLACEHOLDER[type]}
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -277,7 +295,7 @@ export default function TraitsTab({ traits, entries }) {
           </label>
         </div>
         <input
-          placeholder="メモ・改善の方向性（任意）"
+          placeholder={DESC_PLACEHOLDER[type]}
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />

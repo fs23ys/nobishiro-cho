@@ -25,8 +25,25 @@ export default function EntriesTab({ entries, traits }) {
   const [editingText, setEditingText] = useState('')
   const [editingNextAction, setEditingNextAction] = useState('')
   const [filterTraitId, setFilterTraitId] = useState('')
+  const [traitSearchText, setTraitSearchText] = useState('')
 
-  const filteredTraits = useMemo(() => traits.filter((t) => t.type === type), [traits, type])
+  const traitUsageCount = useMemo(() => {
+    const map = new Map()
+    for (const e of entries) {
+      for (const id of getTraitIds(e)) map.set(id, (map.get(id) ?? 0) + 1)
+    }
+    return map
+  }, [entries])
+
+  const filteredTraits = useMemo(() => {
+    const keyword = traitSearchText.trim()
+    const list = traits.filter(
+      (t) => t.type === type && (!keyword || t.name.includes(keyword)),
+    )
+    return [...list].sort(
+      (a, b) => (traitUsageCount.get(b.id) ?? 0) - (traitUsageCount.get(a.id) ?? 0),
+    )
+  }, [traits, type, traitSearchText, traitUsageCount])
 
   const traitById = useMemo(() => {
     const map = new Map()
@@ -44,6 +61,7 @@ export default function EntriesTab({ entries, traits }) {
     setTraitIds([])
     setCreatingTrait(false)
     setNewTraitName('')
+    setTraitSearchText('')
   }
 
   const toggleTraitId = (id) => {
@@ -149,6 +167,16 @@ export default function EntriesTab({ entries, traits }) {
           placeholder="次から試す小さな一歩（任意）"
           value={nextAction}
           onChange={(e) => setNextAction(e.target.value)}
+        />
+        <div className="trait-picker-label">
+          特性を選ぶ（任意・上で選んだ種別から・よく使う順）
+        </div>
+        <input
+          type="text"
+          className="trait-picker-search"
+          placeholder="特性を検索…"
+          value={traitSearchText}
+          onChange={(e) => setTraitSearchText(e.target.value)}
         />
         <div className="trait-picker">
           {filteredTraits.map((t) => (
