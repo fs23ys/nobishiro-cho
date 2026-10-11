@@ -1,7 +1,9 @@
 # のびしろ帖
 
 自分の長所・短所を日々記録し、週1回のペースで振り返るための個人用Webアプリ。
-React + Vite / Firebase（Firestore + Authentication）/ Netlify（ホスティング）構成。
+React + Vite / Firebase（Firestore + Authentication）/ GitHub Pages（ホスティング）構成。
+
+公開URL: https://fs23ys.github.io/nobishiro-cho/
 
 ## セットアップ
 
@@ -36,16 +38,16 @@ cp .env.example .env
 npm run dev
 ```
 
-## デプロイ（Netlify）
+## デプロイ（GitHub Pages）
 
-GitHubリポジトリ（`fs23ys/nobishiro-cho`、プライベート）と連携して自動デプロイする。
+GitHubリポジトリ（`fs23ys/nobishiro-cho`、パブリック）に `main` ブランチをpushすると、
+`.github/workflows/deploy.yml` のGitHub Actionsが自動でビルド・公開する。
 
-1. [Netlify](https://app.netlify.com/) にログインし、「Add new site」→「Import an existing project」
-2. GitHubを選択し、`nobishiro-cho` リポジトリを選ぶ
-3. ビルド設定は `netlify.toml` から自動で読み込まれる（Build command: `npm run build` / Publish directory: `dist`）
-4. 「Site settings」→「Environment variables」で `.env` と同じ内容を登録する
+1. リポジトリの「Settings」→「Pages」→「Build and deployment」→「Source」を `GitHub Actions` にする
+2. 「Settings」→「Secrets and variables」→「Actions」で以下のRepository secretsを登録する（`.env` と同じ内容）
    - `VITE_FIREBASE_API_KEY` / `VITE_FIREBASE_AUTH_DOMAIN` / `VITE_FIREBASE_PROJECT_ID` / `VITE_FIREBASE_STORAGE_BUCKET` / `VITE_FIREBASE_MESSAGING_SENDER_ID` / `VITE_FIREBASE_APP_ID` / `VITE_ALLOWED_EMAIL`
-5. デプロイ後に発行されるURL（例: `xxxx.netlify.app`）を、Firebase Console の Authentication →「Settings」→「Authorized domains」に追加する（追加しないとGoogleログインがブロックされる）
+3. `main` ブランチにpushすると、Actionsタブでワークフローが走り、完了後 `https://fs23ys.github.io/nobishiro-cho/` で公開される
+4. 発行されるURL（`fs23ys.github.io`）を、Firebase Console の Authentication →「Settings」→「Authorized domains」に追加する（追加しないとGoogleログインがブロックされる）
 
 以後は `main` ブランチにpushするたびに自動で再デプロイされる。
 
